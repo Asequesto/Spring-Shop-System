@@ -20,7 +20,7 @@ public class Image {
 
     @Lob
     private Blob image;
-    private String dowloadUrl;
+    private String downloadUrl;
 
 
     @ManyToOne

@@ -6,6 +6,8 @@ import com.daily.shop_system.model.Product;
 import com.daily.shop_system.repository.ImageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,8 +35,12 @@ public class ImageService {
     }
 
     public List<ImageDTO> saveImages(List<MultipartFile> files, Long productId){
+        Logger logger = LoggerFactory.getLogger(getClass());
 
         Product product = productService.getProductById(productId);
+        if(product == null){
+            return null;
+        }
         List<ImageDTO> savedImageDTO = new ArrayList<>();
         for (MultipartFile file : files) {
             try{
@@ -45,17 +51,16 @@ public class ImageService {
                 image.setProduct(product);
 
                 String patternUrl = "/api/v1/images/image/download/";
+                image = imageRepository.save(image);
 
                 String downloadUrl = patternUrl + image.getId();
-                image.setDowloadUrl(downloadUrl);
-                Image savedImage = imageRepository.save(image);
+                image.setDownloadUrl(downloadUrl);
 
-                savedImage.setDowloadUrl(patternUrl + savedImage.getId());
-                imageRepository.save(savedImage);
+                image = imageRepository.save(image);
 
                 ImageDTO imageDTO = new ImageDTO();
-                imageDTO.setImageId(savedImage.getId());
-                imageDTO.setImageName(savedImage.getFileName());
+                imageDTO.setImageId(image.getId());
+                imageDTO.setImageName(image.getFileName());
                 imageDTO.setDownloadUrl(downloadUrl);
                 savedImageDTO.add(imageDTO);
 

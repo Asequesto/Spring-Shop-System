@@ -1,23 +1,19 @@
 package com.daily.shop_system.dto;
 
 import com.daily.shop_system.model.Category;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class ProductDTO {
 
-    private Long id;
     private String name;
     private String brand;
     private String description;
     private BigDecimal price;
     private int inventory;
-
-
     private Category category;
+    private List<ImageDTO> images;
 }

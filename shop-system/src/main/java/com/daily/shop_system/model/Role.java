@@ -5,27 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.List;
-
+import java.util.Collection;
+import java.util.HashSet;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Category {
-
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
+    @ManyToMany(mappedBy = "roles")
+    private Collection<User> users = new HashSet<>();
 
-    @OneToMany(mappedBy = "category")
-    @JsonIgnore
-    private List<Product> products;
 
 }
